@@ -1,0 +1,75 @@
+<div class="sticky  {{ isLogin() ? '':'d-none'}}" style="margin-bottom: -58px;">
+	<div class="horizontal-main hor-menu clearfix">
+		<div class="horizontal-mainwrapper container-fluid clearfix">
+			<nav class="horizontalMenu clearfix">
+				<div class="overlapblackbg"></div>
+				<ul class="horizontalMenu-list">
+					<li aria-haspopup="true">
+						<!-- <img src="../assets/images/brand/venin_icono.png" class="header-brand-img desktop-logo mt-md-2"
+							alt=""> -->
+					</li>
+					<li aria-haspopup="true"><span class="horizontalMenu-click"><i
+								class="horizontalMenu-arrow fa fa-angle-down"></i></span><a class="sub-icon "><i
+								class="fe fe-airplay"></i> Archivo <i class="fa fa-angle-down horizontal-icon"></i></a>
+						<ul class="sub-menu">
+							
+							<!-- <li aria-haspopup="true"><a routerLinkActive="active"
+									(click)="openLink('/personal')">Registro de Personal</a></li>
+							<li aria-haspopup="true"><a routerLinkActive="active"
+									(click)="openLink('proveedor');false">Registro de
+									Proveedores</a></li> -->
+							<li aria-haspopup="true"><a routerLinkActive="active"
+									(click)="openLink('caja_efectivo'); false">Caja Efectivo</a></li>
+							<li *ngIf="usuario.nivel_usuario === '1'" aria-haspopup="true"><a class="btn" (click)="show_empresa()">Editar Empresa</a></li>
+							<li aria-haspopup="true" (click)='cerrar_sistema()'><a>Salir
+									sistema</a></li>
+						</ul>
+					</li>
+					<!-- <li aria-haspopup="true"><span class="horizontalMenu-click"><i
+								class="horizontalMenu-arrow fa fa-angle-down"></i></span><a class="sub-icon "><i
+								class="fe fe-airplay"></i> Logistica <i
+								class="fa fa-angle-down horizontal-icon"></i></a>
+						<ul class="sub-menu">
+							<li aria-haspopup="true"><a routerLinkActive="active"
+									(click)="openLink('caja_efectivo'); false">Caja Efectivo</a></li>
+							<li aria-haspopup="true"><a routerLinkActive="active"
+									(click)="openLink('/ajuste')">Documentos de
+									Almacen</a></li>
+							<li aria-haspopup="true"><a routerLinkActive="active"
+									(click)="openLink('/sol_requerimiento')">Solicitudes de Requerimiento</a></li>
+							<li aria-haspopup="true"><a routerLinkActive="active"
+									(click)="openLink('/ordencompra')">Orden de Compra</a></li>
+							<li aria-haspopup="true"><a routerLinkActive="active"
+									(click)="openLink('/aprobaciones')">Aprobaciones</a></li>
+							<li aria-haspopup="true"><a routerLinkActive="active" (click)="openLink('/ordenprod')">Orden
+									de Produccion</a></li>
+						</ul>
+					</li> -->
+					<li aria-haspopup="true"><span class="horizontalMenu-click"><i
+								class="horizontalMenu-arrow fa fa-angle-down"></i></span><a class="sub-icon "><i
+								class="fe fe-airplay"></i> Informes <i class="fa fa-angle-down horizontal-icon"></i></a>
+						<ul class="sub-menu">
+							<li aria-haspopup="true"><a class="btn" (click)="reporteGeneralCaja()">Reporte General</a>
+							</li>
+							
+							<li aria-haspopup="true"><a class="btn" (click)="openLink('/dashboard')">Dashboard</a></li>
+						</ul>
+					</li>
+					<li aria-haspopup="true" class="mt-4 w-50 mr-0">
+						<div *ngIf="usuario.nivel_usuario === '1' else noadmin" class="d-flex w-100 mr-0">
+							<p class="ml-auto mr-0" (click)="show_sucursal()">Sucursal:
+								{{sucursal}}</p>
+						</div>
+						<ng-template #noadmin>
+							<p>Sucursal: {{sucursal}}</p>
+						</ng-template>
+					</li>
+				</ul>
+			</nav>
+			<!-- NAV END -->
+
+		</div>
+	</div>
+</div>
+<app-select-sucursal></app-select-sucursal>
+<app-edit-empresa></app-edit-empresa>

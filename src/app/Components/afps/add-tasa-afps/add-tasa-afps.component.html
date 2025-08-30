@@ -1,0 +1,211 @@
+<h1 mat-dialog-title>
+    PorcentajesAFPS Empleados
+</h1>
+
+<div mat-dialog-content>
+    <ng-template #loadingSpinner aria-hidden="true">
+        <div class="spinner-container">
+            <mat-progress-spinner mode="indeterminate" diameter="48">
+            </mat-progress-spinner>
+        </div>
+    </ng-template>
+
+    <form *ngIf="!loading else loadingSpinner" [formGroup]="tasaAFPSForm">
+        <div class="info-grid">
+            <!-- Fila 1: 5 campos -->
+            <div class="row-1" style="display: flex; align-items: center; gap: 15px;">
+                <div class="info-item">
+                    <mat-form-field appearance="outline" floatLabel="always">
+                        <mat-label>Id AFPS</mat-label>
+                        <input matInput formControlName="id" type="text" readonly>
+                    </mat-form-field>
+                </div>
+  
+                <div class="info-item" style="flex: 1;">
+                    <mat-form-field appearance="outline" floatLabel="always" style="width: 90%;">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre" type="text" required>
+                    </mat-form-field>    
+                </div>
+
+                <!-- Botones al lado del campo Nombre -->
+                <div class="row-1-buttons" style="display: flex; align-items: center; gap: 10px; padding-right: 20px;">
+                    <button mat-flat-button color="primary" (click)="agregarFila()">
+                        Agregar
+                    </button>
+                </div>
+
+            </div>
+            <hr style="width: 100%; margin: 8px 0; border: none; border-top: 1px  #ccc;">
+            <!-- Fila 2 -->
+            <div class="row-2">
+                <div class="table-container mat-elevation-z1">
+
+                    
+
+                    <table mat-table [dataSource]="dataSource" matSort class="w-100">
+                        
+                        <!-- IdAFPS -->
+                        <ng-container matColumnDef="idafps">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>IdAFPS</th>
+                            <td mat-cell *matCellDef="let element">{{ element.idafps }}</td>
+                        </ng-container>
+                        <!-- Nombres -->
+                        <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                            <td mat-cell *matCellDef="let element">
+                                <ng-container *ngIf="filaEditando === element; else viewMode">
+                                <input 
+                                    type="text"
+                                    [value]="element.nombre" 
+                                    (input)="element.nombre = $event.target.value"
+                                    placeholder="Editar nombre">
+                                </ng-container>
+                                <ng-template #viewMode>
+                                  {{ element.nombre }}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Fecha -->
+                        <ng-container matColumnDef="fecha">
+                            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                            <td mat-cell *matCellDef="let element; let i = index">
+                                <ng-container *ngIf="filaEditando === element; else readFecha">
+                                <input 
+                                    type="date"
+                                    [value]="element.fecha" 
+                                    (input)="element.fecha = $event.target.value">
+                                </ng-container>
+                                <ng-template #readFecha>
+                                  {{ element.fecha }}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Comision -->
+                        <ng-container matColumnDef="comision">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Comision</th>
+                            <td mat-cell *matCellDef="let element; let i = index">
+                                <ng-container *ngIf="filaEditando === element; else readComision">
+                                <input 
+                                    type="number"
+                                    [value]="element.comision"
+                                    (input)="element.comision = $event.target.value">
+                                </ng-container>
+                                <ng-template #readComision>
+                                  {{ element.comision }}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Seguro -->
+                        <ng-container matColumnDef="seguro">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Seguro</th>
+                            <td mat-cell *matCellDef="let element; let i = index">
+                                <ng-container *ngIf="filaEditando === element; else readSeguro">
+                                <input 
+                                    type="number"
+                                    [value]="element.seguro"
+                                    (input)="element.seguro = $event.target.value">
+                                </ng-container>
+                                <ng-template #readSeguro>
+                                  {{ element.seguro }}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+
+                        <!-- Pension -->
+                        <ng-container matColumnDef="pension">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Pensión</th>
+                            <td mat-cell *matCellDef="let element; let i = index">
+                                <ng-container *ngIf="filaEditando === element; else readPension">
+                                <input 
+                                    type="number"
+                                    [value]="element.pension"
+                                    (input)="element.pension = $event.target.value">
+                                </ng-container>
+                                <ng-template #readPension>
+                                  {{ element.pension }}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Topeseguro -->
+                        <ng-container matColumnDef="topeseguro">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tope Seguro</th>
+                            <td mat-cell *matCellDef="let element; let i = index">
+                                <ng-container *ngIf="filaEditando === element; else readTope">
+                                <input 
+                                    type="number"
+                                    [value]="element.topeseguro"
+                                    (input)="element.topeseguro = $event.target.value">
+                                </ng-container>
+                                <ng-template #readTope>
+                                  {{ element.topeseguro }}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Tipo Comisión -->
+                        <ng-container matColumnDef="tipocomision">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo Comisión</th>
+                            <td mat-cell *matCellDef="let element; let i = index">
+                                <ng-container *ngIf="filaEditando === element; else readTipo">
+                                <input 
+                                    type="text"
+                                    [value]="element.tipocomision"
+                                    (input)="element.tipocomision = $event.target.value">
+                                </ng-container>
+                                <ng-template #readTipo>
+                                {{ element.tipocomision }}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                        <!-- Acciones -->
+                        <ng-container matColumnDef="acciones">
+                            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-icon-button color="primary"
+                                        *ngIf="filaEditando === element; else editar"
+                                        (click)="guardarOperacion(element)">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+
+                                <ng-template #editar>
+                                    <button mat-icon-button color="primary"
+                                            (click)="editarOperacion(element)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </ng-template>
+                                <button *ngIf="element.id" mat-icon-button color="warn" aria-label="Anular" matTooltip="Anular"
+                                    (click)="anularOperacion(element.id)">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                                <button mat-icon-button color="warn" aria-label="Eliminar" matTooltip="Eliminar"
+                                    (click)="eliminarFilaTabla(element)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <!-- Header y Filas -->
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    </table>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>                      
+            </div> 
+            <!-- Fila 3 -->
+            <div class="row-3">
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="tasaAFPSForm.invalid || loading">
+        <mat-icon>save</mat-icon> {{ editMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+</div>
