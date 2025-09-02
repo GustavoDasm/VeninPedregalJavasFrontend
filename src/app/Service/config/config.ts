@@ -40,7 +40,7 @@ export class Config {
    public tipoexistencia = 'tipo_exis';
    public unidadmedida = 'unidades';
    public catalogoproducto = 'catalogproduct';
-   public cliente = 'clientes';
+   public cliente = 'cliente';
    public factura = 'factura';
    public caracteristica = 'caracteristicas';
    public valor_caracteristicas = 'valor_caracteristicas';
@@ -142,9 +142,10 @@ export class Config {
 
    public clientedireccion = 'clientedireccion';
    public empleado = 'empleado'
-   public afps = 'afps'
    public facturatemp = 'facturatemp';
    public detallefacturatemp = 'detallefacturatemp';
+   public guiasalida = 'guiasalida'
+
 
 
 }

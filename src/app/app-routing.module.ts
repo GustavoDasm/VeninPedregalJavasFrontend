@@ -9,10 +9,11 @@ import { CajaEfectivoComponent } from './Components/caja-efectivo/caja-efectivo.
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { EmpleadosComponent } from './Components/empleados/empleados.component';
 import { CargadaEstibadorComponent } from './Components/cargada-estibador/cargada-estibador.component';
+import { JabasComponent } from './Components/jabas/jabas.component';
 
 const routes: Routes = [
 
-  { path:'',component:CargadaEstibadorComponent,canActivate: [AuthGuard]  },
+  { path:'',component:JabasComponent,canActivate: [AuthGuard]  },
   { path:'usuario/login',component:LoginComponent},
   { path:'usuario/index',component:IndexComponent ,canActivate: [AuthGuard]},
   { path:'personal',component:PersonalComponent,canActivate: [AuthGuard]},
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path:'dashboard',component:DashboardComponent,canActivate: [AuthGuard]},
   { path:'empleado',component:EmpleadosComponent,canActivate: [AuthGuard]},
   { path:'cargada-estibador',component:CargadaEstibadorComponent,canActivate: [AuthGuard]},
+  { path:'jabas',component:JabasComponent,canActivate: [AuthGuard]},
   
 ];
 

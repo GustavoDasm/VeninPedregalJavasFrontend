@@ -55,7 +55,6 @@ export class DataService {
 
     })
     swal.fire({
-
       title: title,
       text: message,
       icon: types,
@@ -126,8 +125,6 @@ export class DataService {
   getPersonalNombre(): string | null {
     return sessionStorage.getItem('personalNombre');
   }
-
-
 
   initSeriesPorSucursal() {
     const idSucursal: number = parseInt(this.getSucursalId());
