@@ -1,23 +1,8 @@
-import { Articulo } from "../../articulo/articulo";
+import { Ajuste } from "../../ajuste";
+import { Articulos } from "../../articulos/articulos";
 
-export class Detajuste {
-    n?:number;
-    idajuste?:string;
-    idproduct?:string;
-    articulo?:Articulo;
-    cantidad?:number;
-    valunit?:number;
-    inven?:number;
-    inven_sald?:number;
-    item?:number;
-    texto?:string;
-    id_det?:string;
-    total?:number;
-    personalc_id?:string;
-    personalm_id?:string;
-    dtmodificacion?:string;
-
-    constructor(){
-        this.articulo = new Articulo();
-    }
+export interface Detajuste {
+  idajuste: Ajuste;
+  cantidad?: number | null;
+  idproduct: Articulos;
 }

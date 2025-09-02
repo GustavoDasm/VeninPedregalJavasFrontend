@@ -1,6 +1,6 @@
 import { Zona } from '../zona/zona';
 import { UnidadMedida } from '../unidadmedida/unidad-medida';
-import { Articulo } from '../articulo/articulo';
+import { Articulos } from '../articulos/articulos';
 import { Moneda } from '../moneda/moneda';
 
 
@@ -20,13 +20,13 @@ export class Precio {
     zona?:Zona;
     preciomin: string;
     unidad?:UnidadMedida;
-    idproduct?:Articulo;
+    idproduct?:Articulos;
 
     constructor(){
         this.moneda = new Moneda();
         this.unidad = new UnidadMedida();
         this.zona = new Zona();
-        this.idproduct = new Articulo();
+        this.idproduct = new Articulos();
     }
 
     GetData(){

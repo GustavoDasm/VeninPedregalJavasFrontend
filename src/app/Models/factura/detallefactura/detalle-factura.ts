@@ -1,4 +1,4 @@
-import { Articulo } from '../../articulo/articulo';
+import { Articulos } from '../../articulos/articulos';
 import { Precio } from '../../precio/precio';
 import { Factura } from '../factura';
 
@@ -30,7 +30,7 @@ export class DetalleFactura {
     iddet?: string;
     idprecio?:string;
     factura?:Factura;
-    articulo?:Articulo;
+    articulo?:Articulos;
     precio?:Precio;
     impto_cbp?:string;
     icbp?:number;
@@ -42,7 +42,7 @@ export class DetalleFactura {
     esCantidadInvalida?:boolean;
     constructor(){
         this.factura = new Factura();
-        this.articulo = new Articulo();
+        this.articulo = new Articulos();
         this.precio = new Precio();
     }
 }

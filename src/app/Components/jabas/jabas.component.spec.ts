@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AfpsComponent } from './afps.component';
+import { JabasComponent } from './jabas.component';
 
-describe('AfpsComponent', () => {
-  let component: AfpsComponent;
-  let fixture: ComponentFixture<AfpsComponent>;
+describe('JabasComponent', () => {
+  let component: JabasComponent;
+  let fixture: ComponentFixture<JabasComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AfpsComponent ]
+      declarations: [ JabasComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AfpsComponent);
+    fixture = TestBed.createComponent(JabasComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

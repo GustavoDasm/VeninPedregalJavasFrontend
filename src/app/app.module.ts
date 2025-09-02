@@ -63,8 +63,8 @@ import { ReporteGeneralCajaComponent } from './Components/reporte-general-caja/r
 import { ReportePorTipoComponent } from './Components/reporte-por-tipo/reporte-por-tipo.component';
 import { EmpleadosComponent } from './Components/empleados/empleados.component';
 import { AddEmpleadoComponent } from './Components/empleados/add-empleado/add-empleado.component';
-import { AfpsComponent } from './Components/afps/afps.component';
-import { AddTasaAfpsComponent } from './Components/afps/add-tasa-afps/add-tasa-afps.component';
+import { CargadaEstibadorComponent } from './Components/cargada-estibador/cargada-estibador.component';
+import { JabasComponent } from './Components/jabas/jabas.component';
 
 
 
@@ -147,8 +147,8 @@ registerLocaleData(localeEs, 'es-ES');
     ReportePorTipoComponent,
     EmpleadosComponent,
     AddEmpleadoComponent,
-    AfpsComponent,
-    AddTasaAfpsComponent,
+    CargadaEstibadorComponent,
+    JabasComponent,
   ],
   imports: [
     BrowserModule,
@@ -187,7 +187,6 @@ registerLocaleData(localeEs, 'es-ES');
     AddCajaEfectivoComponent,
     ReporteGeneralCajaComponent,
     AddEmpleadoComponent,
-    AddTasaAfpsComponent
   ],
     
   bootstrap: [AppComponent]

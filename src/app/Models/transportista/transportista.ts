@@ -1,16 +1,6 @@
-export class Transportista {
-    idtransporte?:number;
-    razonsocial?:string;
-    ruc?:string;
-    direccion?:string;
-    ciudad?:string;
-    provincia?:string;
-    codpostal?:string;
-    region?:string;
-    telefono?:string;
-    fax?:string;
-    email?:string;
-    nacion?:string;
-    nota?:string;
-    tipo_doc?:string;
+export interface Transportista {
+  idtrans: number;
+  apellidos?: string | null;
+  celular?: string | null;
 }
+

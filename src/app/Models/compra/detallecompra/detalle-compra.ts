@@ -1,4 +1,4 @@
-import { Articulo } from "../../articulo/articulo";
+import { Articulos } from "../../articulos/articulos";
 import { Compra } from "../compra/compra";
 
 export class DetalleCompra {
@@ -35,11 +35,11 @@ export class DetalleCompra {
     personalc_id?:string;
     personalm_id?:string;
     dtmodificacion?:string;
-    articulo?:Articulo;
+    articulo?:Articulos;
     compra?:Compra;
 
     constructor(){
-        this.articulo=new Articulo();
+        this.articulo=new Articulos();
         this.compra=new Compra();
     }
 }

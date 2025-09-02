@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddTasaAfpsComponent } from './add-tasa-afps.component';
+import { CargadaEstibadorComponent } from './cargada-estibador.component';
 
-describe('AddTasaAfpsComponent', () => {
-  let component: AddTasaAfpsComponent;
-  let fixture: ComponentFixture<AddTasaAfpsComponent>;
+describe('CargadaEstibadorComponent', () => {
+  let component: CargadaEstibadorComponent;
+  let fixture: ComponentFixture<CargadaEstibadorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddTasaAfpsComponent ]
+      declarations: [ CargadaEstibadorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddTasaAfpsComponent);
+    fixture = TestBed.createComponent(CargadaEstibadorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
