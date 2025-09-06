@@ -4,6 +4,10 @@ import { Title } from "@angular/platform-browser";
 import { Cliente } from "src/app/Models/cliente/cliente";
 import { DataService } from "src/app/Service/data.service";
 import { SelectOperacionComponent } from "../caja-efectivo/select-operacion/select-operacion.component";
+import { Detguia } from "src/app/Models/guiasalida/detguia/detguia";
+import { GuiaSalida } from "src/app/Models/guiasalida/guiasalida";
+import { DetalleGuia } from "src/app/Models/guiasalida/detguia/detalleguia";
+import { FormEjemploComponent } from "./form-ejemplo/form-ejemplo.component";
 
 @Component({
   selector: "app-cargada-estibador",
@@ -24,16 +28,15 @@ export class CargadaEstibadorComponent implements OnInit {
     establecimiento: this.data.getSucursalId(),
   };
 
-  public clientes: Cliente[] = [];
+  public detalleguias: DetalleGuia[] = [];
+
   displayedColumns: string[] = [
-    "establecimiento",
     "fecha",
-    "hora",
-    "personal",
-    "referencia",
-    "tipocaja",
-    "importe",
-    "estado",
+    "dia",
+    "cantidad",
+    "precio",
+    "total",
+    "cliente",
     "acciones",
   ];
 
@@ -55,6 +58,7 @@ export class CargadaEstibadorComponent implements OnInit {
 
   ngOnInit() {
     this.GetSucursal();
+    this.getDetalleGuia();
   }
 
   GetSucursal() {
@@ -66,14 +70,15 @@ export class CargadaEstibadorComponent implements OnInit {
     );
   }
 
-  getClientes() {
-    this.data.GetSimple(this.data.api.cliente).subscribe((r) => {
-      this.clientes = r;
+  getDetalleGuia() {
+    this.data.GetSimple(this.data.api.detalleguia).subscribe((r) => {
+      this.detalleguias = r;
+      this.dataSource.data = r;
     });
   }
 
-  selectOperacion() {
-    const dialogRef = this.dialog.open(SelectOperacionComponent, {
+  ingresarFormDialog() {
+    const dialogRef = this.dialog.open(FormEjemploComponent, {
       width: "90vw",
       maxWidth: "400px",
     });

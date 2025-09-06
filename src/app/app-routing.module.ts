@@ -13,7 +13,7 @@ import { JabasComponent } from './Components/jabas/jabas.component';
 
 const routes: Routes = [
 
-  { path:'',component:JabasComponent,canActivate: [AuthGuard]  },
+  { path:'',component:CargadaEstibadorComponent,canActivate: [AuthGuard]  },
   { path:'usuario/login',component:LoginComponent},
   { path:'usuario/index',component:IndexComponent ,canActivate: [AuthGuard]},
   { path:'personal',component:PersonalComponent,canActivate: [AuthGuard]},

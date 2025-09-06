@@ -144,8 +144,6 @@ export class Config {
    public empleado = 'empleado'
    public facturatemp = 'facturatemp';
    public detallefacturatemp = 'detallefacturatemp';
-   public guiasalida = 'guiasalida'
-
-
-
+   public guiasalida = 'guiasalida';
+   public detalleguia = 'detalleguia';
 }
