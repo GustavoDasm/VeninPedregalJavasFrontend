@@ -1,16 +1,21 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from "@angular/material";
+import {
+  MatDialog,
+  MatPaginator,
+  MatSort,
+  MatTableDataSource,
+} from "@angular/material";
 import { Title } from "@angular/platform-browser";
 import { DataService } from "src/app/Service/data.service";
 import { DetalleGuia } from "src/app/Models/guiasalida/detguia/detalleguia";
-import { FormEjemploComponent } from "./form-ejemplo/form-ejemplo.component";
+import { AddGuiaSalidaComponent } from "./add-guia-salida/add-guia-salida.component";
 
 @Component({
-  selector: "app-cargada-estibador",
-  templateUrl: "./cargada-estibador.component.html",
-  styleUrls: ["./cargada-estibador.component.css"],
+  selector: "app-guia-salida",
+  templateUrl: "./guia-salida.component.html",
+  styleUrls: ["./guia-salida.component.css"],
 })
-export class CargadaEstibadorComponent implements OnInit {
+export class GuiaSalidaComponent implements OnInit {
   public suc: any;
   public tipo_filtro: number = 0;
   public filtro: any = {
@@ -28,11 +33,10 @@ export class CargadaEstibadorComponent implements OnInit {
 
   displayedColumns: string[] = [
     "fecha",
-    "dia",
+    "cliente",
     "cantidad",
     "precio",
     "total",
-    "cliente",
     "acciones",
   ];
 
@@ -70,13 +74,15 @@ export class CargadaEstibadorComponent implements OnInit {
     this.data.GetSimple(this.data.api.detalleguia).subscribe((r) => {
       this.detalleguias = r;
       this.dataSource.data = r;
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
   }
 
-  ingresarFormDialog() {
-    const dialogRef = this.dialog.open(FormEjemploComponent, {
+  addGuiaSalida() {
+    const dialogRef = this.dialog.open(AddGuiaSalidaComponent, {
       width: "90vw",
-      maxWidth: "400px",
+      maxWidth: "1000px",
     });
-  }
+  } 
 }

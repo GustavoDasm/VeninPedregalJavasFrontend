@@ -10,10 +10,11 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { EmpleadosComponent } from './Components/empleados/empleados.component';
 import { CargadaEstibadorComponent } from './Components/cargada-estibador/cargada-estibador.component';
 import { JabasComponent } from './Components/jabas/jabas.component';
+import { GuiaSalidaComponent } from './Components/guia-salida/guia-salida.component';
 
 const routes: Routes = [
 
-  { path:'',component:CargadaEstibadorComponent,canActivate: [AuthGuard]  },
+  { path:'',component:GuiaSalidaComponent,canActivate: [AuthGuard]  },
   { path:'usuario/login',component:LoginComponent},
   { path:'usuario/index',component:IndexComponent ,canActivate: [AuthGuard]},
   { path:'personal',component:PersonalComponent,canActivate: [AuthGuard]},
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path:'empleado',component:EmpleadosComponent,canActivate: [AuthGuard]},
   { path:'cargada-estibador',component:CargadaEstibadorComponent,canActivate: [AuthGuard]},
   { path:'jabas',component:JabasComponent,canActivate: [AuthGuard]},
+  { path:'guia-salida',component:GuiaSalidaComponent,canActivate: [AuthGuard]},
   
 ];
 

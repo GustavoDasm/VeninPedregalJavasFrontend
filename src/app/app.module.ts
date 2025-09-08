@@ -66,6 +66,8 @@ import { AddEmpleadoComponent } from './Components/empleados/add-empleado/add-em
 import { CargadaEstibadorComponent } from './Components/cargada-estibador/cargada-estibador.component';
 import { JabasComponent } from './Components/jabas/jabas.component';
 import { FormEjemploComponent } from './Components/cargada-estibador/form-ejemplo/form-ejemplo.component';
+import { GuiaSalidaComponent } from './Components/guia-salida/guia-salida.component';
+import { AddGuiaSalidaComponent } from './Components/guia-salida/add-guia-salida/add-guia-salida.component';
 
 
 
@@ -151,6 +153,8 @@ registerLocaleData(localeEs, 'es-ES');
     CargadaEstibadorComponent,
     JabasComponent,
     FormEjemploComponent,
+    GuiaSalidaComponent,
+    AddGuiaSalidaComponent,
   ],
   imports: [
     BrowserModule,
@@ -190,6 +194,7 @@ registerLocaleData(localeEs, 'es-ES');
     ReporteGeneralCajaComponent,
     AddEmpleadoComponent,
     FormEjemploComponent,
+    AddGuiaSalidaComponent,
   ],
     
   bootstrap: [AppComponent]

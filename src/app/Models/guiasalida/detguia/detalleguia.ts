@@ -3,6 +3,5 @@ export interface DetalleGuia {
     precio: number;
     total: number;
     fecha: string;     
-    dia: string;  
     cliente: string;     
 }
