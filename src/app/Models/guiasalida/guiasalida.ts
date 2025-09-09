@@ -9,7 +9,7 @@ export interface GuiaSalida {
   estado?: string | null;
   referencia?: string | null;
   total?: number | null;
-  idcliente: Cliente;
-  idtransporte: Transportista;
-  idsucursal: Sucursal;
+  idcliente: number;
+  idtransporte: number;
+  idsucursal: number;
 }

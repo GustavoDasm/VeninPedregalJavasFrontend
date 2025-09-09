@@ -15,14 +15,14 @@
 
             <!-- Fila 1: 5 campos -->
             <div class="row-1">
-                <div class="info-item">
+                <div class="info-item mt-1">
                     <mat-form-field appearance="outline" floatLabel="always">
                         <mat-label>Fecha</mat-label>
-                        <input matInput formControlName="fecha_guia" type="text" readonly>
+                        <input matInput formControlName="fecha_guia" type="date" readonly>
                     </mat-form-field>
                 </div>
 
-                <div class="info-item">
+                <div class="info-item mt-1">
                     <mat-form-field appearance="outline" floatLabel="always">
                         <mat-label>Hora</mat-label>
                         <input matInput formControlName="hora" type="text" readonly>
@@ -30,13 +30,11 @@
                 </div>
 
                 <div class="info-item">
-                    <mat-form-field appearance="outline" floatLabel="always">
-                        <mat-label>Cliente</mat-label>
-                        <ng-select [items]="cliente" bindLabel="nombrecompleto"
-                            [loading]="loading" [typeToSearchText]="'Escribe para buscar...'"
-                            (search)="onSearch($event.term)" [(ngModel)]="selectedCliente">
-                        </ng-select>
-                    </mat-form-field>
+                    <mat-label>Cliente</mat-label>
+                    <ng-select [items]="cliente" bindLabel="apellidoscompleto" bindValue="idcliente"
+                        [loading]="loading" [typeToSearchText]="'Escribe para buscar...'"
+                        (search)="onSearchCliente($event.term)" formControlName="cliente">
+                    </ng-select>
                 </div>
 <!--                 <div *ngIf="usuario.nivel_usuario === '1' " class="info-item">
                     <mat-form-field appearance="outline" floatLabel="always">
@@ -52,6 +50,13 @@
             <!-- Fila 2 -->
             <div class="row-2">
                 <div class="info-item">
+                    <mat-label>Transporte</mat-label>
+                    <ng-select [items]="transportista" bindLabel="apellidoscompleto" bindValue="idtrans"
+                        [loading]="loading" [typeToSearchText]="'Escribe para buscar...'"
+                        (search)="onSearchTransportista($event.term)" formControlName="transportista">
+                    </ng-select>
+                </div>       
+                <div class="info-item mt-1">
                 <mat-form-field appearance="outline" floatLabel="always">
                     <mat-label>Establecimiento</mat-label>
                     <mat-select formControlName="sucursal" required>
@@ -60,41 +65,133 @@
                     </mat-option>
                     </mat-select>
                 </mat-form-field>
-                </div>
-                <div class="info-item">
+                </div>         
+                <div class="info-item mt-1">
                 <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>Establecimiento</mat-label>
-                    <mat-select formControlName="sucursal" required>
-                    <mat-option *ngFor="let s of sucursales" [value]="s.idsucursal">
-                        {{ s.nombre }}
-                    </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                </div>
-                <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>Localidad</mat-label>
-                    <input matInput formControlName="localidad" type="text" required>
-                </mat-form-field>                
-                <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>Provincia</mat-label>
-                    <input matInput formControlName="provincia" type="text" required>
-                </mat-form-field>  
-                <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>Ciudad</mat-label>
-                    <input matInput formControlName="ciudad" type="text" required>
-                </mat-form-field>                                
+                    <mat-label>Referencia</mat-label>
+                    <input matInput formControlName="referencia_guia" type="text" required>
+                </mat-form-field> 
+                </div>                       
             </div>
             
             <!-- Fila 3 -->
             <div class="row-3">
-                <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>Distrito</mat-label>
-                    <input matInput formControlName="distrito" type="text" required>
-                </mat-form-field> 
-                <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>Nacional</mat-label>
-                    <input matInput formControlName="nacional" type="text" required>
-                </mat-form-field> 
+                <div class="info-item">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="filter-container">
+                        <!-- Título -->
+                        <div>
+                            <h6 class="page-title">Venta</h6>
+                        </div>
+                        <!-- Botón -->
+                        <div>
+                            <button mat-raised-button color="primary" (click)="addVenta()">
+                            Nueva Venta
+                            </button>
+                        </div>
+                    </div>
+                    <hr style="width: 100%; margin: 8px 0; border: none; border-top: 1px  #ccc;">
+                    <div class="table-container mat-elevation-z1">
+                        <table mat-table [dataSource]="dataSourceVentas" matSort class="w-100">
+                            <!-- Producto -->
+                            <ng-container matColumnDef="producto">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
+                                <td mat-cell *matCellDef="let element" class="text-uppercase col-acciones">{{ element.producto }}</td>
+                            </ng-container>
+
+                            <!-- Cantidad -->
+                            <ng-container matColumnDef="cantidad">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+                                <td mat-cell *matCellDef="let element">{{ element.cantidad }}</td>
+                            </ng-container>
+
+                            <!-- Precio -->
+                            <ng-container matColumnDef="precio">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
+                                <td mat-cell *matCellDef="let element">{{ element.precio | number:'1.2-2' }}</td>
+                            </ng-container>
+
+                            <!-- Total -->
+                            <ng-container matColumnDef="total">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+                                <td mat-cell *matCellDef="let element">{{ element.total | number:'1.2-2' }}</td>
+                            </ng-container>
+
+                            <!-- Acciones -->
+                            <ng-container matColumnDef="acciones">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button mat-icon-button color="primary"
+                                        (click)="editarOperacion(element.id)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn" aria-label="Anular" matTooltip="Anular"
+                                        (click)="anularOperacion(element.id)">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>   
+                                </td>
+                            </ng-container>
+                            <!-- Header y Filas -->
+                            <tr mat-header-row *matHeaderRowDef="ventaColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: ventaColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div> 
+                <div class="info-item">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="filter-container">
+                        <!-- Título -->
+                        <div>
+                            <h6 class="page-title">Pagos</h6>
+                        </div>
+                        <!-- Botón -->
+                        <div>
+                            <button mat-raised-button color="primary" (click)="addVenta()">
+                            Nuevo Pago
+                            </button>
+                        </div>
+                    </div>
+                    <hr style="width: 100%; margin: 8px 0; border: none; border-top: 1px  #ccc;">
+                    <div class="table-container mat-elevation-z1">
+                        <table mat-table [dataSource]="dataSourcePagos" matSort class="w-100">
+                            <!-- Fecha -->
+                            <ng-container matColumnDef="fecha">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                                <td mat-cell *matCellDef="let element">{{ element.fecha | date:'dd/MM/yyyy' }}</td>
+                            </ng-container>
+
+                            <!-- Referencia -->
+                            <ng-container matColumnDef="referencia">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Referencia</th>
+                                <td mat-cell *matCellDef="let element" class="text-uppercase col-acciones">{{ element.referencia }}</td>
+                            </ng-container>                                
+
+                            <!-- Total -->
+                            <ng-container matColumnDef="total">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+                                <td mat-cell *matCellDef="let element">{{ element.total | number:'1.2-2' }}</td>
+                            </ng-container>
+
+                            <!-- Acciones -->
+                            <ng-container matColumnDef="acciones">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button mat-icon-button color="primary"
+                                        (click)="editarOperacion(element.id)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn" aria-label="Anular" matTooltip="Anular"
+                                        (click)="anularOperacion(element.id)">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>   
+                                </td>
+                            </ng-container>
+                            <!-- Header y Filas -->
+                            <tr mat-header-row *matHeaderRowDef="pagoColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: pagoColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div> 
             </div>
         </div>
     </form>

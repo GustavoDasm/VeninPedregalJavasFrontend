@@ -146,5 +146,6 @@ export class Config {
    public detallefacturatemp = 'detallefacturatemp';
    public guiasalida = 'guiasalida';
    public detalleguia = 'detalleguia';
+   public detallepago = 'detallepago';
    
 }

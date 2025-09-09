@@ -1,8 +1,10 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
+import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatSort, MatTableDataSource } from "@angular/material";
 import * as moment from "moment";
 import { Cliente } from "src/app/Models/cliente/cliente";
+import { DetallePago } from "src/app/Models/detallepago/detallepago";
+import { Detguia } from "src/app/Models/guiasalida/detguia/detguia";
 import { Sucursal } from "src/app/Models/sucursal/sucursal";
 import { Transportista } from "src/app/Models/transportista/transportista";
 import { DataService } from "src/app/Service/data.service";
@@ -13,15 +15,16 @@ import { DataService } from "src/app/Service/data.service";
   styleUrls: ["./add-guia-salida.component.css"],
 })
 export class AddGuiaSalidaComponent implements OnInit {
-  loading = false;
+  loadingClientes = false;
+  loadingTransportistas = false;
   guiaSalidaForm: FormGroup;
   today = new Date();
   currentTime = new Date();
   cliente: Cliente[] = [];
-  nombreCliente: string | null = null;
-  transporte: Transportista[] = [];
+  transportista: Transportista[] = [];
   sucursales: Sucursal[] = [];
-
+  detVenta: Detguia[] = [];
+  detPago: DetallePago[] = [];
   ventaColumns: string[] = [
     "producto",
     "cantidad",
@@ -32,53 +35,109 @@ export class AddGuiaSalidaComponent implements OnInit {
 
   pagoColumns: string[] = ["fecha", "referencia", "total", "acciones"];
 
-  search = {
+  search_clientes = {
     top: 100,
-    clase: undefined,
-    subclase: undefined,
-    subgrupo: undefined,
-    text: "",
     scale: "ASC",
-    marca: "",
-    opcion: "idprecio",
-    codigo: "",
-    nombre: "",
+    apellidos: "",
   };
+
+  search_transportistas = {
+    top: 100,
+    scale: "ASC",
+    apellidos: "",
+  };  
+
+  dataSourceVentas: MatTableDataSource<any>;
+  dataSourcePagos: MatTableDataSource<any>;
+  operacionesVentas: any[] = [];
+  operacionesPagos: any[] = [];
+
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   constructor(
     private fb: FormBuilder,
-    private dataService: DataService,
+    private data: DataService,
     private dialogRef: MatDialogRef<AddGuiaSalidaComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public dataForm: any
   ) {
+    this.dataSourceVentas = new MatTableDataSource(this.operacionesVentas);
+    this.dataSourcePagos = new MatTableDataSource(this.operacionesPagos);
+
     this.guiaSalidaForm = this.fb.group({
       id: [null],
       fecha_guia: [moment().format("YYYY-MM-DD"), Validators.required],
       hora: [moment().format("HH:mm"), Validators.required],
-      cliente: ["", [Validators.required, Validators.maxLength(50)]],
-      transporte: ["", [Validators.maxLength(50)]],
-      sucursal: ["", [Validators.required, Validators.maxLength(20)]],
+      cliente: [null, Validators.required],
+      transportista: [null, Validators.required],
+      sucursal: [null, Validators.required],
       referencia_guia: ["", [Validators.maxLength(40)]],
       producto: ["", [Validators.required, Validators.maxLength(25)]],
       cantidad: [null, [Validators.required, Validators.pattern(/^\d+$/)]],
-      precio: [null, [Validators.required, Validators.maxLength(15), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
-      total_venta: [null, [Validators.required, Validators.maxLength(15), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+      precio: [
+        null,
+        [
+          Validators.required,
+          Validators.maxLength(15),
+          Validators.pattern(/^\d+(\.\d{1,2})?$/),
+        ],
+      ],
+      total_venta: [
+        null,
+        [
+          Validators.required,
+          Validators.maxLength(15),
+          Validators.pattern(/^\d+(\.\d{1,2})?$/),
+        ],
+      ],
       fecha_pago: [moment().format("YYYY-MM-DD"), Validators.required],
       referencia_pago: ["", [Validators.maxLength(20)]],
-      importe: [null, [Validators.required, Validators.maxLength(15), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+      importe: [
+        null,
+        [
+          Validators.required,
+          Validators.maxLength(15),
+          Validators.pattern(/^\d+(\.\d{1,2})?$/),
+        ],
+      ],
     });
   }
 
   ngOnInit(): void {
     // Actualizar hora cada segundo
+    this.getDetVentas();
+    this.getDetPagos();
     this.getSucursales();
+    console.log("Formulario creado:", this.guiaSalidaForm.value);
     setInterval(() => {
       this.currentTime = new Date();
     }, 1000);
+
+/*     if (this.dataForm?.id) {
+      this.data.GetById("guia_salida", this.dataForm.id).subscribe(res => {
+        this.guiaSalidaForm.patchValue(res);
+    })} */
+  }
+  getDetVentas() {
+    this.data.GetSimple(this.data.api.detguia).subscribe((r) => {
+      this.detVenta = r;
+      this.dataSourceVentas.data = r;
+      this.dataSourceVentas.sort = this.sort;
+      this.dataSourceVentas.paginator = this.paginator;
+    });
+  }
+
+  getDetPagos() {
+    this.data.GetSimple(this.data.api.detallepago).subscribe((r) => {
+      this.detPago = r;
+      this.dataSourcePagos.data = r;
+      this.dataSourcePagos.sort = this.sort;
+      this.dataSourcePagos.paginator = this.paginator;
+    });
   }
 
   getSucursales() {
-    this.dataService.GetSimple(this.dataService.api.sucursal).subscribe(
+    this.data.GetSimple(this.data.api.sucursal).subscribe(
       (res: any[]) => {
         this.sucursales = res;
       },
@@ -88,8 +147,8 @@ export class AddGuiaSalidaComponent implements OnInit {
     );
   }
 
-  saveEmpleado(empleado: any): void {
-    this.dataService.Post("empleado", empleado).subscribe(
+/*   saveEmpleado(empleado: any): void {
+    this.data.Post("empleado", empleado).subscribe(
       (res) => {
         console.log("Empleado guardado:", res);
         this.dialogRef.close(res);
@@ -98,40 +157,88 @@ export class AddGuiaSalidaComponent implements OnInit {
         console.error("Error al guardar el empleado:", error);
       }
     );
-  }
+  } */
 
-  onSearch(term: string) {
+  onSearchCliente(term: string) {
     // opcional: filtrar si term es muy corto
+    console.log("Buscando cliente con término:", term);
     if (!term || term.length < 2) {
       this.cliente = [];
+      console.log("Término muy corto, limpiando lista de clientes.");
       return;
     }
-    this.search.nombre = term; // tu objeto search (ajusta el campo si usas otro)
-    this.search_cliente();
+    const searchPayload = { apellidos: term };  // o el campo que uses en backend para filtrar
+    this.search_cliente(searchPayload);
   }
-  search_cliente() {
-    this.loading = true;
-    console.log("Enviando busqueda : ", this.search);
 
-    this.dataService.Post("cliente", this.search).subscribe(
+  search_cliente(searchParams: any) {
+    this.loadingClientes = true;
+    console.log("Enviando búsqueda con parámetros:", searchParams);
+
+    this.data.Post("search_cliente", searchParams).subscribe(
       (r) => {
-      this.loading = false;
-
-      if (r?.message === 'success' && r.data?.length > 0) {
-        const cliente = r.data[0];  // Primer resultado
-        this.nombreCliente = cliente.nombre; // Almacenas el nombre
-        console.log("Nombre cliente:", this.nombreCliente);
-      } else {
-        console.warn("Cliente no encontrado");
-        this.nombreCliente = null;
+        this.loadingClientes = false;
+        console.log("Respuesta del servidor:", r);
+        if (!r || r.message !== "success") {
+          console.error("Error en respuesta del backend:", r);
+          this.cliente = [];
+        } else {
+          const items = r.data.map((item) => ({
+            ...item,
+            apellidoscompleto: item.apellidos || 'Sin nombre',
+          }));
+          console.log("Clientes formateados:", items);
+          this.cliente = items;
+        }
+      },
+      (e) => {
+        this.loadingClientes = false;
+        this.cliente = [];
+        console.error("Error HTTP al buscar cliente:", e);
       }
-    },
-    (err) => {
-      this.loading = false;
-      console.error("Error al buscar cliente:", err);
-      this.nombreCliente = null;
-    });
+    );
   }
+
+  onSearchTransportista(term: string) {
+    // opcional: filtrar si term es muy corto
+    console.log("Buscando transportista con término:", term);
+    if (!term || term.length < 2) {
+      this.transportista = [];
+      console.log("Término muy corto, limpiando lista de transportistas.");
+      return;
+    }
+    const searchPayload = { apellidos: term };  // o el campo que uses en backend para filtrar
+    this.search_transportista(searchPayload);
+  }
+
+  search_transportista(searchParams: any) {
+    this.loadingTransportistas = true;
+    console.log("Enviando búsqueda con parámetros:", searchParams);
+
+    this.data.Post("search_transportista", searchParams).subscribe(
+      (r) => {
+        this.loadingTransportistas = false;
+        console.log("Respuesta del servidor:", r);
+        if (!r || r.message !== "success") {
+          console.error("Error en respuesta del backend:", r);
+          this.transportista = [];
+        } else {
+          const items = r.data.map((item) => ({
+            ...item,
+            apellidoscompleto: item.apellidos || 'Sin nombre',
+          }));
+          console.log("Transportistas formateados:", items);
+          this.transportista = items;
+        }
+      },
+      (e) => {
+        this.loadingTransportistas = false;
+        this.transportista = [];
+        console.error("Error HTTP al buscar transportistas:", e);
+      }
+    );
+  }
+
   onSubmit(): void {
     /*     if (this.caja_efectivo.valid) {
       const operacion = this.caja_efectivo.value;
@@ -148,70 +255,4 @@ export class AddGuiaSalidaComponent implements OnInit {
     this.dialogRef.close();
   }
 }
-/* <mat-form-field appearance="outline" floatLabel="always" class="w-100">
-  <mat-label>Cliente</mat-label>
-  <ng-select
-    [items]="cliente"
-    bindLabel="nombrecompleto"
-    [loading]="loading"
-    [typeahead]="searchInput$"
-    [typeToSearchText]="'Escribe para buscar...'"
-    placeholder="Buscar cliente"
-    [(ngModel)]="selectedCliente"
-    (change)="onClienteSeleccionado($event)">
-  </ng-select>
-</mat-form-field> 
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-searchInput$ = new Subject<string>();
-cliente: any[] = [];
-selectedCliente: any = null;
-loading = false;
-
-ngOnInit() {
-  this.setupSearch();
-}
-
-setupSearch() {
-  this.searchInput$
-    .pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(term => this.buscarCliente(term))
-    )
-    .subscribe(
-      (res) => {
-        this.cliente = res;
-        this.loading = false;
-      },
-      (err) => {
-        console.error(err);
-        this.cliente = [];
-        this.loading = false;
-      }
-    );
-}
-
-buscarCliente(term: string) {
-  this.loading = true;
-
-  const body = { search: term };
-
-  return this.dataService.Post('cliente', body).pipe(
-    // Mapea los datos si es necesario
-    // Suponiendo que devuelve { message: 'success', data: [...] }
-    switchMap((r: any) => {
-      const items = r?.data?.map((item: any) => ({
-        ...item,
-        nombrecompleto: item.nombre  // Ajusta según estructura real
-      })) || [];
-      return [items];
-    })
-  );
-}
-
-onClienteSeleccionado(cliente: any) {
-  console.log("Cliente seleccionado:", cliente);
-}
-*/

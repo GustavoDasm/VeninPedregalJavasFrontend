@@ -9,6 +9,7 @@ import { Title } from "@angular/platform-browser";
 import { DataService } from "src/app/Service/data.service";
 import { DetalleGuia } from "src/app/Models/guiasalida/detguia/detalleguia";
 import { AddGuiaSalidaComponent } from "./add-guia-salida/add-guia-salida.component";
+import { ALertOption } from "src/app/Models/alert/alert-option";
 
 @Component({
   selector: "app-guia-salida",
@@ -51,7 +52,7 @@ export class GuiaSalidaComponent implements OnInit {
     private titleService: Title,
     public dialog: MatDialog
   ) {
-    this.titleService.setTitle("Cargada Estribor | Sistema Venin");
+    this.titleService.setTitle("Guia Salida | Sistema Venin");
 
     this.dataSource = new MatTableDataSource(this.operaciones);
   }
@@ -85,4 +86,27 @@ export class GuiaSalidaComponent implements OnInit {
       maxWidth: "1000px",
     });
   } 
+
+  editarOperacion(id: any) {
+    const dialogRef = this.dialog.open(AddGuiaSalidaComponent, {
+      width: '90vw',
+      maxWidth: '1000px',
+      data: { 
+        id: id,
+      }
+    });
+  }
+
+  anularOperacion(id:any){
+    this.data.notify("¿Desea anular esta operación?","Atencion",this.data.alertType.question, new ALertOption(),()=>{
+      this.data.Patch("cajaefectivo",id,{estado:'anulado'}).subscribe((res)=>{
+        this.data.notify(res.message,"Exito",this.data.alertType.success);
+      }, (error)=>{
+        console.log(error);
+        
+      },()=>{
+        /* this.mostrarFiltro(); */
+      } );
+    });
+  }  
 }

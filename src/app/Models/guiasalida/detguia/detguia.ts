@@ -1,4 +1,3 @@
-import { Articulos } from "../../articulos/articulos";
 import { GuiaSalida } from "../guiasalida";
 
 export interface Detguia {
@@ -6,5 +5,5 @@ export interface Detguia {
   cantidad?: number | null;
   precio?: number | null;
   total?: number | null;
-  idproduct: Articulos;
+  idproduct: number;
 }

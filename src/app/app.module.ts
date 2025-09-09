@@ -68,6 +68,8 @@ import { JabasComponent } from './Components/jabas/jabas.component';
 import { FormEjemploComponent } from './Components/cargada-estibador/form-ejemplo/form-ejemplo.component';
 import { GuiaSalidaComponent } from './Components/guia-salida/guia-salida.component';
 import { AddGuiaSalidaComponent } from './Components/guia-salida/add-guia-salida/add-guia-salida.component';
+import { AddPagoComponent } from './Components/guia-salida/add-guia-salida/add-pago/add-pago.component';
+import { AddVentaComponent } from './Components/guia-salida/add-guia-salida/add-venta/add-venta.component';
 
 
 
@@ -155,6 +157,8 @@ registerLocaleData(localeEs, 'es-ES');
     FormEjemploComponent,
     GuiaSalidaComponent,
     AddGuiaSalidaComponent,
+    AddPagoComponent,
+    AddVentaComponent,
   ],
   imports: [
     BrowserModule,
